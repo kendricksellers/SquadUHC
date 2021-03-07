@@ -1,0 +1,26 @@
+main: me.kendricksellers.uhc.SquadUHC
+name: SquadUHC
+version: 0.0.1
+commands:
+  end:
+    description: Ends the game
+    permission: squaduhc.command.end
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <player>
+  options:
+    description: Displays the options in a GUI
+    aliases: opt
+    permission: squaduhc.command.options
+    permission-message: You do not have permission to perform this command.
+    usage: /<command>
+  scenarios:
+    description: Displays the scenarios in a GUI
+    aliases: sc
+    permission: squaduhc.command.scenarios
+    permission-message: You do not have permission to perform this command.
+    usage: /<command>
+  start:
+    description: Starts the game
+    permission: squaduhc.command.start
+    permission-message: You do not have permission to perform this command.
+    usage: /<command>
