@@ -54,8 +54,8 @@ public class ToggleModuleGUI extends GUI {
                 }
                 updateInventory();
             }
+            event.setCancelled(true);
         }
-        event.setCancelled(true);
     }
 
     @Override
