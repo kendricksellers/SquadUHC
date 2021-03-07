@@ -8,6 +8,7 @@ import me.kendricksellers.uhc.modules.module.core.CommandModule;
 import me.kendricksellers.uhc.modules.module.core.LobbyModule;
 import me.kendricksellers.uhc.modules.module.option.PermadayModule;
 import me.kendricksellers.uhc.modules.module.scenario.CutCleanModule;
+import me.kendricksellers.uhc.modules.module.scenario.NoAnvilModule;
 import me.kendricksellers.uhc.states.MatchState;
 import me.kendricksellers.uhc.states.PlayerState;
 import org.bukkit.Bukkit;
@@ -77,6 +78,7 @@ public class Match {
 
         // SCENARIOS
         modules.add(new CutCleanModule());
+        modules.add(new NoAnvilModule());
     }
 
     public void start() {
