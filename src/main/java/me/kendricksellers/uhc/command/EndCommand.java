@@ -15,6 +15,6 @@ public class EndCommand implements CommandExecutor {
             Player player = Bukkit.getServer().getPlayer(args[0]);
             SquadUHC.getInstance().getMatch().end(player);
         }
-        return false;
+        return true;
     }
 }
