@@ -30,11 +30,11 @@ public class ToggleModuleGUI extends GUI {
                 int slotNum = (row * 9) + (col % 9);
                 if (row == 0 || row == 2 || col == 0 || col == 8) {
                     inv.setItem(slotNum, ItemUtils.createItemStack(Material.STAINED_GLASS, 1, (short) 7, ""));
-                } else if (col == 6) {
-                    inv.setItem(slotNum, ItemUtils.createItemStack(Material.STAINED_GLASS, 1, (short) 14, "Disable"));
                 } else if (col == 2) {
-                    inv.setItem(slotNum, module.getEmblem());
+                    inv.setItem(slotNum, ItemUtils.createItemStack(Material.STAINED_GLASS, 1, (short) 14, "Disable"));
                 } else if (col == 4) {
+                    inv.setItem(slotNum, module.getEmblem());
+                } else if (col == 6) {
                     inv.setItem(slotNum, ItemUtils.createItemStack(Material.STAINED_GLASS, 1, (short) 5, "Enable"));
                 }
             }

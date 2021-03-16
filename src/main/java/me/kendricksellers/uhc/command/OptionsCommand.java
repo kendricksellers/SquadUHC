@@ -28,6 +28,6 @@ public class OptionsCommand implements CommandExecutor {
                 ((Player) sender).openInventory(gui.getInv());
             }
         }
-        return false;
+        return true;
     }
 }

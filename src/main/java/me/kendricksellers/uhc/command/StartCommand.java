@@ -13,6 +13,6 @@ public class StartCommand implements CommandExecutor {
             // Add timer option
             SquadUHC.getInstance().getMatch().start();
         }
-        return false;
+        return true;
     }
 }
