@@ -26,6 +26,7 @@ public class NoAnvilModule extends Module {
     }
 
     //TODO Replace message with future message system
+    final String ANVIL_DENY = ChatColor.RED + "Anvils can not be used!";
 
     @EventHandler
     public void onAnvilCraft(PrepareItemCraftEvent event) {
@@ -35,7 +36,7 @@ public class NoAnvilModule extends Module {
 
                 for (HumanEntity entity : event.getViewers()) {
                     if (entity instanceof Player) {
-                        entity.sendMessage(ChatColor.RED + "Anvils can not be used!");
+                        entity.sendMessage(ANVIL_DENY);
                     }
                 }
             }
@@ -47,7 +48,7 @@ public class NoAnvilModule extends Module {
         if (isEnabled() && Match.getInstance().isRunning()) {
             if(event.getBlock().getType().equals(Material.ANVIL)) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(ChatColor.RED + "Anvils can not be used!");
+                event.getPlayer().sendMessage(ANVIL_DENY);
             }
         }
     }
@@ -57,7 +58,7 @@ public class NoAnvilModule extends Module {
         if (isEnabled() && Match.getInstance().isRunning()) {
             if(event.getInventory().getType().equals(InventoryType.ANVIL)) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(ChatColor.RED + "Anvils can not be used!");
+                event.getPlayer().sendMessage(ANVIL_DENY);
             }
         }
     }
