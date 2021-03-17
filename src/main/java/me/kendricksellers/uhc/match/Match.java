@@ -1,24 +1,24 @@
 package me.kendricksellers.uhc.match;
 
 import me.kendricksellers.uhc.SquadUHC;
+import me.kendricksellers.uhc.event.MatchEndEvent;
+import me.kendricksellers.uhc.event.MatchStartEvent;
 import me.kendricksellers.uhc.match.world.WorldGeneration;
-import me.kendricksellers.uhc.modules.Module;
-import me.kendricksellers.uhc.modules.ModuleList;
-import me.kendricksellers.uhc.modules.module.core.CommandModule;
-import me.kendricksellers.uhc.modules.module.core.LobbyModule;
-import me.kendricksellers.uhc.modules.module.option.PermadayModule;
-import me.kendricksellers.uhc.modules.module.scenario.CutCleanModule;
-import me.kendricksellers.uhc.modules.module.scenario.NoAnvilModule;
-import me.kendricksellers.uhc.states.MatchState;
-import me.kendricksellers.uhc.states.PlayerState;
+import me.kendricksellers.uhc.module.Module;
+import me.kendricksellers.uhc.module.ModuleList;
+import me.kendricksellers.uhc.module.exception.ModuleNotFoundException;
+import me.kendricksellers.uhc.module.modules.core.CommandModule;
+import me.kendricksellers.uhc.module.modules.core.LobbyModule;
+import me.kendricksellers.uhc.module.modules.core.PlayerModule;
+import me.kendricksellers.uhc.module.modules.option.PermadayModule;
+import me.kendricksellers.uhc.module.modules.scenario.CutCleanModule;
+import me.kendricksellers.uhc.module.modules.scenario.NoAnvilModule;
+import me.kendricksellers.uhc.state.MatchState;
+import me.kendricksellers.uhc.util.UHCPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class Match {
 
@@ -26,12 +26,10 @@ public class Match {
     private World world;
     private ModuleList<Module> modules;
     private MatchState state;
-    private Map<UUID, PlayerState> players;
 
     public Match() {
         instance = this;
         world = WorldGeneration.getInstance().generateWorld();
-        players = new HashMap<>();
         modules = new ModuleList<>();
         state = MatchState.PREGAME;
         loadModules();
@@ -64,14 +62,11 @@ public class Match {
         return state == MatchState.STARTED;
     }
 
-    public Map<UUID, PlayerState> getPlayers() {
-        return players;
-    }
-
     public void loadModules() {
         // CORE
         modules.add(new CommandModule());
         modules.add(new LobbyModule());
+        modules.add(new PlayerModule());
 
         // OPTIONS
         modules.add(new PermadayModule());
@@ -85,12 +80,21 @@ public class Match {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             player.teleport(world.getSpawnLocation());
         }
+        Bukkit.getPluginManager().callEvent(new MatchStartEvent());
+
         state = MatchState.STARTED;
     }
 
     public void end(Player winner) {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             player.teleport(SquadUHC.getInstance().getLobby().getSpawnLocation());
+        }
+
+        try {
+            UHCPlayer player = ((PlayerModule) getModules().getModule("Player")).getPlayer(winner.getUniqueId());
+            Bukkit.getPluginManager().callEvent(new MatchEndEvent(player));
+        } catch (ModuleNotFoundException e) {
+            e.printStackTrace();
         }
         Bukkit.getServer().broadcastMessage(ChatColor.GREEN + winner.getName() + " has won!");
     }
