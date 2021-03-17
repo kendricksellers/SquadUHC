@@ -1,9 +1,9 @@
 package me.kendricksellers.uhc.command;
 
-import me.kendricksellers.uhc.modules.ModuleType;
-import me.kendricksellers.uhc.modules.exception.InvalidGUIException;
-import me.kendricksellers.uhc.modules.gui.GUIGenerator;
-import me.kendricksellers.uhc.modules.gui.ModuleGUI;
+import me.kendricksellers.uhc.module.ModuleType;
+import me.kendricksellers.uhc.module.exception.InvalidGUIException;
+import me.kendricksellers.uhc.module.gui.GUIGenerator;
+import me.kendricksellers.uhc.module.gui.ModuleGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
