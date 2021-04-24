@@ -26,6 +26,7 @@ public class Match {
     private World world;
     private ModuleList<Module> modules;
     private MatchState state;
+    private final String WIN_MESSAGE = ChatColor.GREEN + "{0} is the winner!";
 
     public Match() {
         instance = this;
@@ -96,7 +97,7 @@ public class Match {
         } catch (ModuleNotFoundException e) {
             e.printStackTrace();
         }
-        Bukkit.getServer().broadcastMessage(ChatColor.GREEN + winner.getName() + " has won!");
+        Bukkit.getServer().broadcastMessage(WIN_MESSAGE.replace("{0}", winner.getName()));
     }
 
 }
