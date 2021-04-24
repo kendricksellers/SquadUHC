@@ -17,6 +17,8 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class NoAnvilModule extends Module {
+    private final String ANVIL_DENY = ChatColor.RED + "Anvils can not be used!";
+
     public NoAnvilModule() {
         setName("NoAnvil");
         setType(ModuleType.SCENARIO);
@@ -24,9 +26,6 @@ public class NoAnvilModule extends Module {
         setGUI(new ToggleModuleGUI(this));
         setEnabled(false);
     }
-
-    //TODO Replace message with future message system
-    final String ANVIL_DENY = ChatColor.RED + "Anvils can not be used!";
 
     @EventHandler
     public void onAnvilCraft(PrepareItemCraftEvent event) {
