@@ -63,7 +63,7 @@ public class ChatUtils {
             // HANDLE TEAM CHAT HERE
         } else if (channel == ChatChannel.ADMIN) {
             onlinePlayers.stream().filter(p -> p.getBukkitPlayer().hasPermission("squaduhc.chat.admin")).forEach(p ->
-                p.getBukkitPlayer().sendMessage(createAdminMessage(sender, message));
+                p.getBukkitPlayer().sendMessage(createAdminMessage(sender, message))
             );
         } else if (channel == ChatChannel.OBSERVER) {
             onlinePlayers.stream().filter(p ->
