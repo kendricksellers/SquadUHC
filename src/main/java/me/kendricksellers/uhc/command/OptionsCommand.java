@@ -14,10 +14,10 @@ public class OptionsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            throw new CommandException("Sender must be instanceof player.");
-        }
-        if (command.getName().equals("options")) {
+        if (command.getName().equalsIgnoreCase("options")) {
+            if (!(sender instanceof Player)) {
+                throw new CommandException("Sender must be instanceof player.");
+            }
             ModuleGUI gui = null;
             try {
                 gui = GUIGenerator.getInstance().createGUI(ModuleType.OPTION);

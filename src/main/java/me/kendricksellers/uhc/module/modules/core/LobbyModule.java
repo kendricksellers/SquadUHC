@@ -43,7 +43,7 @@ public class LobbyModule extends Module {
         if (Match.getInstance().getState() == MatchState.PREGAME) {
             managePlayerJoin(event.getPlayer(), PlayerState.COMBATANT);
         } else {
-            managePlayerJoin(event.getPlayer(), PlayerState.SPECTATOR);
+            managePlayerJoin(event.getPlayer(), PlayerState.OBSERVER);
         }
     }
 

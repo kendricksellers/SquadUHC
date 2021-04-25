@@ -7,6 +7,7 @@ import me.kendricksellers.uhc.match.world.WorldGeneration;
 import me.kendricksellers.uhc.module.Module;
 import me.kendricksellers.uhc.module.ModuleList;
 import me.kendricksellers.uhc.module.exception.ModuleNotFoundException;
+import me.kendricksellers.uhc.module.modules.core.ChatModule;
 import me.kendricksellers.uhc.module.modules.core.CommandModule;
 import me.kendricksellers.uhc.module.modules.core.LobbyModule;
 import me.kendricksellers.uhc.module.modules.core.PlayerModule;
@@ -65,6 +66,7 @@ public class Match {
 
     public void loadModules() {
         // CORE
+        modules.add(new ChatModule());
         modules.add(new CommandModule());
         modules.add(new LobbyModule());
         modules.add(new PlayerModule());

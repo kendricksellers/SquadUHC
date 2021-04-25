@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class UHCPlayer {
     private final Player bukkitPlayer;
+    private String displayName;
     private PlayerState state;
     private final Map<String, Object> metadata;
 
@@ -16,6 +17,7 @@ public class UHCPlayer {
         this.bukkitPlayer = bukkitPlayer;
         this.state = state;
         this.metadata = new HashMap<>();
+        this.displayName = bukkitPlayer.getDisplayName();
     }
 
     public Player getBukkitPlayer() {
@@ -40,5 +42,13 @@ public class UHCPlayer {
 
     public Object getMetadata(String key) {
         return this.metadata.get(key);
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
