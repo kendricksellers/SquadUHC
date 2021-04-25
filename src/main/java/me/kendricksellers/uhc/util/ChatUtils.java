@@ -62,12 +62,9 @@ public class ChatUtils {
         } else if (channel == ChatChannel.TEAM) {
             // HANDLE TEAM CHAT HERE
         } else if (channel == ChatChannel.ADMIN) {
-            for (int i = 0; i < onlinePlayers.size(); i++) {
-                Player player = onlinePlayers.get(i).getBukkitPlayer();
-                if (player.hasPermission("squaduhc.chat.admin")) {
-                    player.sendMessage(createAdminMessage(sender, message));
-                }
-            }
+            onlinePlayers.stream().filter(p -> p.getBukkitPlayer().hasPermission("squaduhc.chat.admin")).forEach(p ->
+                p.getBukkitPlayer().sendMessage(createAdminMessage(sender, message));
+            );
         } else if (channel == ChatChannel.OBSERVER) {
             onlinePlayers.stream().filter(p ->
                     p.getState() == PlayerState.OBSERVER || p.getState() == PlayerState.DECEASED
