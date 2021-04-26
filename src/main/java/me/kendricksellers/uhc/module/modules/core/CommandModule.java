@@ -26,6 +26,7 @@ public class CommandModule extends Module {
     private void loadCommands() {
         // Register command executors here
         // Don't forget to put commands in plugin.yml!
+        loadCommand("generate", new GenerateWorldCommand());
         loadCommands(new ChatCommand(), "a", "t", "o", "helpop");
         loadCommand("end", new EndCommand());
         loadCommand("nick", new NickCommand());

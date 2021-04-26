@@ -1,13 +1,11 @@
 package me.kendricksellers.uhc.command;
 
 import me.kendricksellers.uhc.match.Match;
-import me.kendricksellers.uhc.module.exception.ModuleNotFoundException;
 import me.kendricksellers.uhc.module.modules.core.PlayerModule;
 import me.kendricksellers.uhc.state.PlayerState;
 import me.kendricksellers.uhc.util.ChatChannel;
 import me.kendricksellers.uhc.util.ChatUtils;
 import me.kendricksellers.uhc.util.UHCPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
@@ -29,13 +27,7 @@ public class ChatCommand implements CommandExecutor {
             if (sender instanceof Server) {
                 throw new CommandException("No console use");
             }
-            PlayerModule playerModule;
-            try {
-                playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
-            } catch (ModuleNotFoundException e) {
-                e.printStackTrace();
-                return true;
-            }
+            PlayerModule playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
             UHCPlayer player = playerModule.getPlayer(((Player) sender).getUniqueId());
             PlayerState state = player.getState();
 

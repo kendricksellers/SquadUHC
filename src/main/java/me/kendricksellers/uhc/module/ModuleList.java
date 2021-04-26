@@ -1,6 +1,5 @@
 package me.kendricksellers.uhc.module;
 
-import me.kendricksellers.uhc.module.exception.ModuleNotFoundException;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class ModuleList<T extends Module> extends ArrayList<T> {
         return res;
     }
 
-    public Module getModule(String name) throws ModuleNotFoundException {
+    public Module getModule(String name) {
         if (this.contains(name)) {
             for (T t : this) {
                 if (t.getName().equals(name)) {
@@ -33,7 +32,8 @@ public class ModuleList<T extends Module> extends ArrayList<T> {
                 }
             }
         }
-        throw new ModuleNotFoundException("Module - " + name + " - not found in ModuleList");
+        Bukkit.getServer().getLogger().warning("Failed to load module - " + name);
+        return null;
     }
 
     public boolean contains(String name) {

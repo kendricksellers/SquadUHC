@@ -71,15 +71,11 @@ public class LobbyModule extends Module {
     }
 
     private void managePlayerJoin(Player player, PlayerState state) {
-        try {
-            PlayerModule playerModule = ((PlayerModule) Match.getInstance().getModules().getModule("Player"));
+        PlayerModule playerModule = ((PlayerModule) Match.getInstance().getModules().getModule("Player"));
 
-            if (!playerModule.hasJoined(player.getUniqueId())) {
-                playerModule.addPlayer(new UHCPlayer(player, state));
-            }
-            player.teleport(lobby.getSpawnLocation());
-        } catch (ModuleNotFoundException e) {
-            e.printStackTrace();
+        if (!playerModule.hasJoined(player.getUniqueId())) {
+            playerModule.addPlayer(new UHCPlayer(player, state));
         }
+        player.teleport(lobby.getSpawnLocation());
     }
 }

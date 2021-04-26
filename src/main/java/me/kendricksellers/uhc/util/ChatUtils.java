@@ -47,13 +47,7 @@ public class ChatUtils {
     }
 
     public static void sendMessage(UHCPlayer sender, String message, ChatChannel channel) {
-        PlayerModule playerModule;
-        try {
-            playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
-        } catch (ModuleNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
+        PlayerModule playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
 
         List<UHCPlayer> onlinePlayers = playerModule.getPlayers().stream().filter(p -> p.getBukkitPlayer().isOnline()).collect(Collectors.toList());
 

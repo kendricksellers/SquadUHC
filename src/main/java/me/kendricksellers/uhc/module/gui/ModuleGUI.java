@@ -55,12 +55,7 @@ public class ModuleGUI extends GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().equals(inv)) {
             if (SquadUHC.getInstance().getMatch().getModules().contains(event.getCurrentItem().getItemMeta().getDisplayName())) {
-                Module module;
-                try {
-                    module = Match.getInstance().getModules().getModule(event.getCurrentItem().getItemMeta().getDisplayName());
-                } catch (ModuleNotFoundException e) {
-                    return;
-                }
+                Module module = Match.getInstance().getModules().getModule(event.getCurrentItem().getItemMeta().getDisplayName());
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().openInventory(module.getGUI().getInventory());
             }

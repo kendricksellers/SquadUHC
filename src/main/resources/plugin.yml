@@ -8,6 +8,12 @@ commands:
     permission: squaduhc.chat.admin
     permission-message: You do not have permission to perform this command.
     usage: /<command> <message>
+  generate:
+    description: Generates the world
+    aliases: worldgen, wg, gen
+    permission: squaduhc.command.generate
+    permission-message: You do not have permission to perform this command.
+    usage: /<command>
   helpop:
     description: Sends a message to the hosts
     aliases: ho, helpme

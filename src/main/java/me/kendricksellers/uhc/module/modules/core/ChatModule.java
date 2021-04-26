@@ -29,27 +29,23 @@ public class ChatModule extends Module {
     @EventHandler(priority = EventPriority.HIGH)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         if (isEnabled()) {
-            try {
-                PlayerModule playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
-                UHCPlayer player = playerModule.getPlayer(event.getPlayer().getUniqueId());
-                String message = event.getMessage();
-                if (event.getPlayer().hasPermission("squaduhc.server.host")) {
-                    ChatUtils.sendMessage(player, message, ChatChannel.GLOBAL);
+            PlayerModule playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
+            UHCPlayer player = playerModule.getPlayer(event.getPlayer().getUniqueId());
+            String message = event.getMessage();
+            if (event.getPlayer().hasPermission("squaduhc.server.host")) {
+                ChatUtils.sendMessage(player, message, ChatChannel.GLOBAL);
+                event.setCancelled(true);
+                return;
+            }
+            PlayerState state = player.getState();
+            if (Match.getInstance().isRunning()) {
+                if (state == PlayerState.DECEASED || state == PlayerState.OBSERVER) {
+                    ChatUtils.sendMessage(player, message, ChatChannel.OBSERVER);
                     event.setCancelled(true);
                     return;
                 }
-                PlayerState state = player.getState();
-                if (Match.getInstance().isRunning()) {
-                    if (state == PlayerState.DECEASED || state == PlayerState.OBSERVER) {
-                        ChatUtils.sendMessage(player, message, ChatChannel.OBSERVER);
-                        event.setCancelled(true);
-                        return;
-                    }
-                }
-                ChatUtils.sendMessage(player, message, ChatChannel.GLOBAL);
-            } catch (ModuleNotFoundException e) {
-                e.printStackTrace();
             }
+            ChatUtils.sendMessage(player, message, ChatChannel.GLOBAL);
             event.setCancelled(true);
         }
     }
