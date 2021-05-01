@@ -24,3 +24,8 @@ commands:
     permission: squaduhc.command.start
     permission-message: You do not have permission to perform this command.
     usage: /<command>
+  team:
+    description: Base team command
+    permission: squaduhc.command.team
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <create|invite|accept|leave>

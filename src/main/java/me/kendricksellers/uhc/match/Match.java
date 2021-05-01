@@ -10,6 +10,7 @@ import me.kendricksellers.uhc.module.exception.ModuleNotFoundException;
 import me.kendricksellers.uhc.module.modules.core.CommandModule;
 import me.kendricksellers.uhc.module.modules.core.LobbyModule;
 import me.kendricksellers.uhc.module.modules.core.PlayerModule;
+import me.kendricksellers.uhc.module.modules.core.TeamModule;
 import me.kendricksellers.uhc.module.modules.option.PermadayModule;
 import me.kendricksellers.uhc.module.modules.scenario.CutCleanModule;
 import me.kendricksellers.uhc.module.modules.scenario.NoAnvilModule;
@@ -68,6 +69,7 @@ public class Match {
         modules.add(new CommandModule());
         modules.add(new LobbyModule());
         modules.add(new PlayerModule());
+        modules.add(new TeamModule());
 
         // OPTIONS
         modules.add(new PermadayModule());

@@ -1,12 +1,9 @@
 package me.kendricksellers.uhc.module.modules.core;
 
 import me.kendricksellers.uhc.SquadUHC;
-import me.kendricksellers.uhc.command.EndCommand;
-import me.kendricksellers.uhc.command.StartCommand;
+import me.kendricksellers.uhc.command.*;
 import me.kendricksellers.uhc.module.Module;
 import me.kendricksellers.uhc.module.ModuleType;
-import me.kendricksellers.uhc.command.OptionsCommand;
-import me.kendricksellers.uhc.command.ScenariosCommand;
 import me.kendricksellers.uhc.module.gui.ToggleModuleGUI;
 import me.kendricksellers.uhc.util.ItemUtils;
 import org.bukkit.Material;
@@ -31,6 +28,7 @@ public class CommandModule extends Module {
         loadCommand("options", new OptionsCommand());
         loadCommand("scenarios", new ScenariosCommand());
         loadCommand("start", new StartCommand());
+        loadCommand("team", new TeamCommands());
     }
 
     private void loadCommand(String name, CommandExecutor executor) {
