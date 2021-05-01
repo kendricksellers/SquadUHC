@@ -14,10 +14,10 @@ public class ScenariosCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            throw new CommandException("Sender must be instanceof player.");
-        }
-        if (command.getName().equals("scenarios")) {
+        if (command.getName().equalsIgnoreCase("scenarios")) {
+            if (!(sender instanceof Player)) {
+                throw new CommandException("Sender must be instanceof player.");
+            }
             ModuleGUI gui = null;
             try {
                 gui = GUIGenerator.getInstance().createGUI(ModuleType.SCENARIO);

@@ -43,7 +43,7 @@ public class LobbyModule extends Module {
         if (Match.getInstance().getState() == MatchState.PREGAME) {
             managePlayerJoin(event.getPlayer(), PlayerState.COMBATANT);
         } else {
-            managePlayerJoin(event.getPlayer(), PlayerState.SPECTATOR);
+            managePlayerJoin(event.getPlayer(), PlayerState.OBSERVER);
         }
     }
 
@@ -71,15 +71,11 @@ public class LobbyModule extends Module {
     }
 
     private void managePlayerJoin(Player player, PlayerState state) {
-        try {
-            PlayerModule playerModule = ((PlayerModule) Match.getInstance().getModules().getModule("Player"));
+        PlayerModule playerModule = ((PlayerModule) Match.getInstance().getModules().getModule("Player"));
 
-            if (!playerModule.hasJoined(player.getUniqueId())) {
-                playerModule.addPlayer(new UHCPlayer(player, state));
-            }
-            player.teleport(lobby.getSpawnLocation());
-        } catch (ModuleNotFoundException e) {
-            e.printStackTrace();
+        if (!playerModule.hasJoined(player.getUniqueId())) {
+            playerModule.addPlayer(new UHCPlayer(player, state));
         }
+        player.teleport(lobby.getSpawnLocation());
     }
 }

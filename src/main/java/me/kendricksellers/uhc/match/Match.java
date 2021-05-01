@@ -3,14 +3,13 @@ package me.kendricksellers.uhc.match;
 import me.kendricksellers.uhc.SquadUHC;
 import me.kendricksellers.uhc.event.MatchEndEvent;
 import me.kendricksellers.uhc.event.MatchStartEvent;
-import me.kendricksellers.uhc.match.world.WorldGeneration;
 import me.kendricksellers.uhc.module.Module;
 import me.kendricksellers.uhc.module.ModuleList;
-import me.kendricksellers.uhc.module.exception.ModuleNotFoundException;
 import me.kendricksellers.uhc.module.modules.core.CommandModule;
 import me.kendricksellers.uhc.module.modules.core.LobbyModule;
 import me.kendricksellers.uhc.module.modules.core.PlayerModule;
 import me.kendricksellers.uhc.module.modules.core.TeamModule;
+import me.kendricksellers.uhc.module.modules.core.*;
 import me.kendricksellers.uhc.module.modules.option.PermadayModule;
 import me.kendricksellers.uhc.module.modules.scenario.CutCleanModule;
 import me.kendricksellers.uhc.module.modules.scenario.NoAnvilModule;
@@ -31,10 +30,11 @@ public class Match {
 
     public Match() {
         instance = this;
-        world = WorldGeneration.getInstance().generateWorld();
         modules = new ModuleList<>();
         state = MatchState.PREGAME;
         loadModules();
+
+        world = null;
     }
 
     public static Match getInstance() {
@@ -66,10 +66,12 @@ public class Match {
 
     public void loadModules() {
         // CORE
+        modules.add(new ChatModule());
         modules.add(new CommandModule());
         modules.add(new LobbyModule());
         modules.add(new PlayerModule());
         modules.add(new TeamModule());
+        modules.add(new WorldModule());
 
         // OPTIONS
         modules.add(new PermadayModule());
@@ -93,13 +95,17 @@ public class Match {
             player.teleport(SquadUHC.getInstance().getLobby().getSpawnLocation());
         }
 
-        try {
-            UHCPlayer player = ((PlayerModule) getModules().getModule("Player")).getPlayer(winner.getUniqueId());
-            Bukkit.getPluginManager().callEvent(new MatchEndEvent(player));
-        } catch (ModuleNotFoundException e) {
-            e.printStackTrace();
-        }
+        UHCPlayer player = ((PlayerModule) getModules().getModule("Player")).getPlayer(winner.getUniqueId());
+        Bukkit.getPluginManager().callEvent(new MatchEndEvent(player));
         Bukkit.getServer().broadcastMessage(WIN_MESSAGE.replace("{0}", winner.getName()));
+    }
+
+    public void generateWorld() {
+        world = ((WorldModule) this.getModules().getModule("World")).generateWorld();
+    }
+
+    public boolean isGenerated() {
+        return world != null;
     }
 
 }

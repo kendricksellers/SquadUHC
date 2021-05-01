@@ -11,7 +11,7 @@ public class EndCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equals("end") && sender.hasPermission("squaduhc.command.end") && args.length == 1) {
+        if (command.getName().equalsIgnoreCase("end") && sender.hasPermission("squaduhc.command.end") && args.length == 1) {
             Player player = Bukkit.getServer().getPlayer(args[0]);
             SquadUHC.getInstance().getMatch().end(player);
         }

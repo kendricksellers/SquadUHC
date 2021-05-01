@@ -10,6 +10,7 @@ import java.util.Map;
 public class UHCPlayer {
     private final Player bukkitPlayer;
     private UHCTeam team;
+    private String displayName;
     private PlayerState state;
     private final Map<String, Object> metadata;
 
@@ -19,6 +20,7 @@ public class UHCPlayer {
         this.state = state;
         this.team = null;
         this.metadata = new HashMap<>();
+        this.displayName = bukkitPlayer.getDisplayName();
     }
 
     public Player getBukkitPlayer() {
@@ -72,5 +74,13 @@ public class UHCPlayer {
 
     public void setNameColor(ChatColor color) {
         getBukkitPlayer().setDisplayName(color + getBukkitPlayer().getName());
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

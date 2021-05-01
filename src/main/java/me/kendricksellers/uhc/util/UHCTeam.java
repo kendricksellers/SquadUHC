@@ -82,12 +82,7 @@ public class UHCTeam {
     }
 
     public boolean isTeamMember(Player bukkitPlayer) {
-        try {
-            PlayerModule module = (PlayerModule) Match.getInstance().getModules().getModule("Player");
-            return this.isTeamMember(module.getPlayer(bukkitPlayer.getUniqueId()));
-        } catch (ModuleNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
+        PlayerModule module = (PlayerModule) Match.getInstance().getModules().getModule("Player");
+        return this.isTeamMember(module.getPlayer(bukkitPlayer.getUniqueId()));
     }
 }

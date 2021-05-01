@@ -2,11 +2,40 @@ main: me.kendricksellers.uhc.SquadUHC
 name: SquadUHC
 version: 0.0.1
 commands:
+  a:
+    description: Sends a message in admin chat
+    aliases: admin, ac
+    permission: squaduhc.chat.admin
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <message>
+  generate:
+    description: Generates the world
+    aliases: worldgen, wg, gen
+    permission: squaduhc.command.generate
+    permission-message: You do not have permission to perform this command.
+    usage: /<command>
+  helpop:
+    description: Sends a message to the hosts
+    aliases: ho, helpme
+    permission: squaduhc.command.helpop
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <message>
   end:
     description: Ends the game
     permission: squaduhc.command.end
     permission-message: You do not have permission to perform this command.
     usage: /<command> <player>
+  nick:
+    description: Nicknames the player
+    permission: squaduhc.command.nick
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <name>
+  o:
+    description: Sends a message in observer chat
+    aliases: observer, oc
+    permission: squaduhc.chat.observer
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <message>
   options:
     description: Displays the options in a GUI
     aliases: opt
@@ -24,8 +53,17 @@ commands:
     permission: squaduhc.command.start
     permission-message: You do not have permission to perform this command.
     usage: /<command>
+<<<<<<< HEAD
   team:
     description: Base team command
     permission: squaduhc.command.team
     permission-message: You do not have permission to perform this command.
     usage: /<command> <create|invite|accept|leave>
+=======
+  t:
+    description: Sends a message in team chat
+    aliases: teamchat, tc
+    permission: squaduhc.chat.team
+    permission-message: You do not have permission to perform this command.
+    usage: /<command> <message>
+>>>>>>> origin/main

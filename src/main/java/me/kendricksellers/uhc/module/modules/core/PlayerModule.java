@@ -50,7 +50,7 @@ public class PlayerModule extends Module {
 
     public UHCPlayer getPlayer(UUID uuid) {
         try {
-            return this.players.stream().filter(player -> player.getBukkitPlayer().getUniqueId() == uuid).findFirst().orElseThrow();
+            return this.players.stream().filter(player -> player.getBukkitPlayer().getUniqueId() == uuid).findFirst().get();
         } catch (NoSuchElementException e) {
             e.printStackTrace();
         }
