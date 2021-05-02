@@ -15,10 +15,14 @@ import java.util.ResourceBundle;
 *
 * */
 public enum UHCMessage {
-    TEST_MESSAGE,
-    ANOTHER_ONE;
+    ANVIL_USE_DENY,
+    COMMAND_CHAT_ALIVE_ERR,
+    COMMAND_CHAT_EMPTY,
+    COMMAND_CHAT_OBS_ERR,
+    COMMAND_GENERATE_GENERATED,
+    COMMAND_NICK_NEW_NAME,
+    WIN_MESSAGE;
 
-    
     Map<String, ResourceBundle> lang = new HashMap<>();
     public String get(Object... args) {
         return getLocale("en_US", args);

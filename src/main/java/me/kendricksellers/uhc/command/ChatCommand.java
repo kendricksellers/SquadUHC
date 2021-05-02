@@ -5,6 +5,7 @@ import me.kendricksellers.uhc.module.modules.core.PlayerModule;
 import me.kendricksellers.uhc.state.PlayerState;
 import me.kendricksellers.uhc.util.ChatChannel;
 import me.kendricksellers.uhc.util.ChatUtils;
+import me.kendricksellers.uhc.util.UHCMessage;
 import me.kendricksellers.uhc.util.UHCPlayer;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -19,14 +20,15 @@ public class ChatCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("o") || command.getName().equalsIgnoreCase("a")
                 || command.getName().equalsIgnoreCase("t") || command.getName().equalsIgnoreCase("helpop")) {
-            if (args.length < 1) {
-                sender.sendMessage("You must specify a message to send!");
-                return true;
-            }
-
             if (sender instanceof Server) {
                 throw new CommandException("No console use");
             }
+
+            if (args.length < 1) {
+                ChatUtils.message((Player) sender, UHCMessage.COMMAND_CHAT_EMPTY);
+                return true;
+            }
+
             PlayerModule playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
             UHCPlayer player = playerModule.getPlayer(((Player) sender).getUniqueId());
             PlayerState state = player.getState();
@@ -36,7 +38,7 @@ public class ChatCommand implements CommandExecutor {
                     ChatUtils.sendMessage(player, String.join(" ", args), ChatChannel.OBSERVER);
                     return true;
                 }
-                player.getBukkitPlayer().sendMessage("You must be an observer to use this command.");
+                ChatUtils.message(player, UHCMessage.COMMAND_CHAT_OBS_ERR);
                 return true;
             }
             if (command.getName().equalsIgnoreCase("t") && sender.hasPermission("squaduhc.chat.team")) {
@@ -44,7 +46,7 @@ public class ChatCommand implements CommandExecutor {
                     ChatUtils.sendMessage(player, String.join(" ", args), ChatChannel.TEAM);
                     return true;
                 }
-                player.getBukkitPlayer().sendMessage("You must be alive to use this command.");
+                ChatUtils.message(player, UHCMessage.COMMAND_CHAT_ALIVE_ERR);
                 return true;
             }
             if (command.getName().equalsIgnoreCase("a") && sender.hasPermission("squaduhc.chat.admin")) {

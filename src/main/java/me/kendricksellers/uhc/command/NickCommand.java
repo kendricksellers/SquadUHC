@@ -17,11 +17,11 @@ public class NickCommand implements CommandExecutor {
             PlayerModule playerModule = (PlayerModule) Match.getInstance().getModules().getModule("Player");
             if (args.length > 0) {
                 playerModule.getPlayer(((Player) sender).getUniqueId()).setDisplayName(String.join(" ", args));
-                sender.sendMessage("Your new nickname is: " + String.join(" ", args));
+                ChatUtils.message((Player) sender, UHCMessage.COMMAND_NICK_NEW_NAME, String.join(" ", args));
                 return true;
             }
             playerModule.getPlayer(((Player) sender).getUniqueId()).setDisplayName(sender.getName());
-            sender.sendMessage("Your new nickname is: " + sender.getName());
+            ChatUtils.message((Player) sender, UHCMessage.COMMAND_NICK_NEW_NAME, sender.getName());
         }
         return true;
     }

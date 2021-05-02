@@ -10,6 +10,8 @@ import me.kendricksellers.uhc.module.modules.option.PermadayModule;
 import me.kendricksellers.uhc.module.modules.scenario.CutCleanModule;
 import me.kendricksellers.uhc.module.modules.scenario.NoAnvilModule;
 import me.kendricksellers.uhc.state.MatchState;
+import me.kendricksellers.uhc.util.ChatUtils;
+import me.kendricksellers.uhc.util.UHCMessage;
 import me.kendricksellers.uhc.util.UHCPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,7 +24,6 @@ public class Match {
     private World world;
     private ModuleList<Module> modules;
     private MatchState state;
-    private final String WIN_MESSAGE = ChatColor.GREEN + "{0} is the winner!";
 
     public Match() {
         instance = this;
@@ -92,7 +93,10 @@ public class Match {
 
         UHCPlayer player = ((PlayerModule) getModules().getModule("Player")).getPlayer(winner.getUniqueId());
         Bukkit.getPluginManager().callEvent(new MatchEndEvent(player));
-        Bukkit.getServer().broadcastMessage(WIN_MESSAGE.replace("{0}", winner.getName()));
+
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            ChatUtils.message(p, UHCMessage.WIN_MESSAGE, winner.getName());
+        });
     }
 
     public void generateWorld() {

@@ -4,8 +4,9 @@ import me.kendricksellers.uhc.match.Match;
 import me.kendricksellers.uhc.module.Module;
 import me.kendricksellers.uhc.module.ModuleType;
 import me.kendricksellers.uhc.module.gui.ToggleModuleGUI;
+import me.kendricksellers.uhc.util.ChatUtils;
 import me.kendricksellers.uhc.util.ItemUtils;
-import org.bukkit.ChatColor;
+import me.kendricksellers.uhc.util.UHCMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -17,8 +18,6 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class NoAnvilModule extends Module {
-    private final String ANVIL_DENY = ChatColor.RED + "Anvils can not be used!";
-
     public NoAnvilModule() {
         setName("NoAnvil");
         setType(ModuleType.SCENARIO);
@@ -35,7 +34,7 @@ public class NoAnvilModule extends Module {
 
                 for (HumanEntity entity : event.getViewers()) {
                     if (entity instanceof Player) {
-                        entity.sendMessage(ANVIL_DENY);
+                        ChatUtils.message((Player) entity, UHCMessage.ANVIL_USE_DENY);
                     }
                 }
             }
@@ -47,7 +46,7 @@ public class NoAnvilModule extends Module {
         if (isEnabled() && Match.getInstance().isRunning()) {
             if(event.getBlock().getType().equals(Material.ANVIL)) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(ANVIL_DENY);
+                ChatUtils.message(event.getPlayer(), UHCMessage.ANVIL_USE_DENY);
             }
         }
     }
@@ -57,7 +56,7 @@ public class NoAnvilModule extends Module {
         if (isEnabled() && Match.getInstance().isRunning()) {
             if(event.getInventory().getType().equals(InventoryType.ANVIL)) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(ANVIL_DENY);
+                ChatUtils.message((Player) event.getPlayer(), UHCMessage.ANVIL_USE_DENY);
             }
         }
     }
