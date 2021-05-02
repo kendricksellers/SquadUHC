@@ -20,8 +20,11 @@ public class TeamModule extends Module {
 
     private final String CREATE_ALREADY_ON_TEAM = ChatColor.RED + "You are already on a team!";
     private final String INVITE_NOT_ON_TEAM = ChatColor.RED + "You are not on a team!";
-    private final String INVITE_PLAYER_ON_TEAM = ChatColor.RED + "{0} is already on another team!";
+    private final String INVITE_PLAYER_ON_ANOTHER_TEAM = ChatColor.RED + "{0} is already on another team!";
+    private final String INVITE_PLAYER_ON_YOUR_TEAM = ChatColor.RED + "{0} is already on your team!";
     private final String INVITE_MSG = ChatColor.AQUA + "{0} has invited you to join their team! ";
+    private final String INVITE_NONE = ChatColor.RED + "you don't have an invite to {0}'s team!";
+    private final String INVITE_PENDING = ChatColor.RED + "There is already an invite pending for this player!";
     private final String JOIN_TEAM_JOINED = ChatColor.GREEN + "You have joined a team.";
     private final String LEAVE_TEAM_FAIL = ChatColor.RED + "You are not on a team!";
     private final String LEAVE_TEAM_SUCCESS = ChatColor.GREEN + "You have left your team!";
@@ -45,7 +48,6 @@ public class TeamModule extends Module {
         ))));
 
         this.teams = new ArrayList<>();
-
         setEnabled(true);
     }
 
@@ -73,14 +75,13 @@ public class TeamModule extends Module {
                 return;
             }
             if(invited.hasTeam() && invited.getTeam().equals(invitee.getTeam())) {
-                invitee.message(ChatColor.AQUA + "Hey look around, see that guy? Yeah? He is on your team already.");
+                invitee.message(INVITE_PLAYER_ON_YOUR_TEAM.replace("{0}", invited.name()));
                 return;
             }
             if(invited.hasTeam()) {
-                invitee.message(INVITE_PLAYER_ON_TEAM.replace("{0}", invited.name()));
+                invitee.message(INVITE_PLAYER_ON_ANOTHER_TEAM.replace("{0}", invited.name()));
                 return;
             }
-
 
             if(invitee.getTeam().getMemberCount() < this.getMaxTeamSize()) {
                 //Send invite message? - Message Builder Util?
@@ -91,7 +92,7 @@ public class TeamModule extends Module {
                     invited.message(INVITE_MSG.replace("{0}", invitee.name()));
                     invitee.message(TEAM_INVITED.replace("{0}", invited.name()));
                 }else {
-                    invitee.message("You areleady dfinvidted thisd bperison stupodiun");
+                    invitee.message(INVITE_PENDING);
                 }
             } else {
                 invitee.message(TEAM_CAPACITY_REACHED);
@@ -102,7 +103,7 @@ public class TeamModule extends Module {
     public void joinTeam(UHCPlayer player, UHCTeam team) {
         if(isEnabled()) {
             if(!team.hasInvite(player)) {
-                player.message("you don't have an invite to " + team.getLeader().name());
+                player.message(INVITE_NONE.replace("{0}", team.getLeader().name()));
                 return;
             }
 
@@ -116,12 +117,9 @@ public class TeamModule extends Module {
                     member.message(TEAM_ACCEPTED.replace("{0}", player.name()));
                 });
 
-                Bukkit.broadcastMessage("A? " + team.getTeamMembers().size());
                 team.addTeamMember(player);
                 player.setNameColor(team.getTeamColor());
                 player.message(JOIN_TEAM_JOINED);
-                Bukkit.broadcastMessage("B? " + team.getTeamMembers().size());
-
             } else {
                 player.message(CREATE_ALREADY_ON_TEAM);
             }
@@ -151,12 +149,9 @@ public class TeamModule extends Module {
         if(isEnabled()) {
             teams.remove(team);
 
-            Bukkit.broadcastMessage("C? " + team.getTeamMembers().size());
-
             for (int i = team.getTeamMembers().size() - 1; i >= 0; i--) {
                 UHCPlayer player = team.getTeamMembers().get(i);
                 team.removeTeamMember(player);
-                Bukkit.broadcastMessage("NAME?! " + player.name());
                 player.message(LEAVE_TEAM_DISBAND);
             }
         }
