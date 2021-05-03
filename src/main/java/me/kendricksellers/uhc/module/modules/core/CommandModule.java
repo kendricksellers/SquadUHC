@@ -33,6 +33,7 @@ public class CommandModule extends Module {
         loadCommand("options", new OptionsCommand());
         loadCommand("scenarios", new ScenariosCommand());
         loadCommand("start", new StartCommand());
+        loadCommand("team", new TeamCommands());
     }
 
     private void loadCommand(String name, CommandExecutor executor) {

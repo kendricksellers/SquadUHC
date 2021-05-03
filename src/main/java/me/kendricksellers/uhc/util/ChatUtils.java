@@ -54,7 +54,9 @@ public class ChatUtils {
         if (channel == ChatChannel.GLOBAL) {
             Bukkit.broadcastMessage(createGlobalMessage(sender, message));
         } else if (channel == ChatChannel.TEAM) {
-            // HANDLE TEAM CHAT HERE
+            if(sender.hasTeam()) {
+                sender.getTeam().getTeamMembers().forEach(member -> member.message(createTeamMessage(sender, message)));
+            }
         } else if (channel == ChatChannel.ADMIN) {
             onlinePlayers.stream().filter(p -> p.getBukkitPlayer().hasPermission("squaduhc.chat.admin")).forEach(p ->
                 p.getBukkitPlayer().sendMessage(createAdminMessage(sender, message))

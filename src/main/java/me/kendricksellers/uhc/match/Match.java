@@ -5,6 +5,10 @@ import me.kendricksellers.uhc.event.MatchEndEvent;
 import me.kendricksellers.uhc.event.MatchStartEvent;
 import me.kendricksellers.uhc.module.Module;
 import me.kendricksellers.uhc.module.ModuleList;
+import me.kendricksellers.uhc.module.modules.core.CommandModule;
+import me.kendricksellers.uhc.module.modules.core.LobbyModule;
+import me.kendricksellers.uhc.module.modules.core.PlayerModule;
+import me.kendricksellers.uhc.module.modules.core.TeamModule;
 import me.kendricksellers.uhc.module.modules.core.*;
 import me.kendricksellers.uhc.module.modules.option.PermadayModule;
 import me.kendricksellers.uhc.module.modules.scenario.CutCleanModule;
@@ -66,6 +70,7 @@ public class Match {
         modules.add(new CommandModule());
         modules.add(new LobbyModule());
         modules.add(new PlayerModule());
+        modules.add(new TeamModule());
         modules.add(new WorldModule());
 
         // OPTIONS
