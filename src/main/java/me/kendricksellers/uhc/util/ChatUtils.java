@@ -76,4 +76,12 @@ public class ChatUtils {
             });
         }
     }
+
+    public static void message(UHCPlayer player, UHCMessage message, Object... args) {
+        message(player.getBukkitPlayer(), message, args);
+    }
+
+    public static void message(Player player, UHCMessage message, Object... args) {
+        player.sendMessage(message.get(player, args));
+    }
 }
