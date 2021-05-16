@@ -6,9 +6,7 @@ import me.kendricksellers.uhc.module.ModuleType;
 import me.kendricksellers.uhc.module.gui.AdvancedModuleGUI;
 import me.kendricksellers.uhc.module.gui.slot.BooleanSlot;
 import me.kendricksellers.uhc.module.gui.slot.NumberSlot;
-import me.kendricksellers.uhc.util.ItemUtils;
-import me.kendricksellers.uhc.util.UHCPlayer;
-import me.kendricksellers.uhc.util.UHCTeam;
+import me.kendricksellers.uhc.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,26 +15,7 @@ import java.util.*;
 
 public class TeamModule extends Module {
     private final List<UHCTeam> teams;
-
-    private final String CREATE_ALREADY_ON_TEAM = ChatColor.RED + "You are already on a team!";
-    private final String INVITE_NOT_ON_TEAM = ChatColor.RED + "You are not on a team!";
-    private final String INVITE_PLAYER_ON_ANOTHER_TEAM = ChatColor.RED + "{0} is already on another team!";
-    private final String INVITE_PLAYER_ON_YOUR_TEAM = ChatColor.RED + "{0} is already on your team!";
-    private final String INVITE_MSG = ChatColor.AQUA + "{0} has invited you to join their team! ";
-    private final String INVITE_NONE = ChatColor.RED + "you don't have an invite to {0}'s team!";
-    private final String INVITE_PENDING = ChatColor.RED + "There is already an invite pending for this player!";
-    private final String JOIN_TEAM_JOINED = ChatColor.GREEN + "You have joined a team.";
-    private final String LEAVE_TEAM_FAIL = ChatColor.RED + "You are not on a team!";
-    private final String LEAVE_TEAM_SUCCESS = ChatColor.GREEN + "You have left your team!";
-    private final String LEAVE_TEAM_DISBAND = ChatColor.RED + "Your team has been disbanded!";
-    private final String NOT_TEAM_LEADER = ChatColor.RED + "Only the team leader can do this action!";
-    private final String TEAM_CAPACITY_REACHED = ChatColor.RED + "This team is already full!";
     private final String SLOT_TEAM_SIZE = "Max Team Size";
-
-    private final String TEAM_CREATE = ChatColor.GREEN + "Team has been created!";
-    private final String TEAM_INVITED = ChatColor.GREEN + "{0} was invited to the team!";
-    private final String TEAM_ACCEPTED = ChatColor.GREEN + "{0} joined the team!";
-    private final String TEAM_LEFT = ChatColor.GREEN + "{0} left the team!";
 
     public TeamModule() {
         setName("Team");
@@ -54,32 +33,32 @@ public class TeamModule extends Module {
     public void create(UHCPlayer player) {
         if(isEnabled()) {
             if(player.hasTeam()) {
-                player.message(CREATE_ALREADY_ON_TEAM);
+                ChatUtils.message(player, UHCMessage.COMMAND_CREATE_ON_TEAM);
                 return;
             }
             UUID uuid = UUID.randomUUID();
             UHCTeam team = new UHCTeam(uuid, player, ChatColor.AQUA /* Select random color */);
             teams.add(team);
-            player.message(TEAM_CREATE);
+            ChatUtils.message(player, UHCMessage.COMMAND_TEAM_CREATE);
         }
     }
 
     public void invite(UHCPlayer invitee, UHCPlayer invited) {
         if(isEnabled()) {
             if(!invitee.hasTeam()) {
-                invitee.message(INVITE_NOT_ON_TEAM);
+                ChatUtils.message(invitee, UHCMessage.COMMAND_INVITE_NO_TEAM);
                 return;
             }
             if(!invitee.getTeam().isTeamLeader(invitee)) {
-                invitee.message(NOT_TEAM_LEADER);
+                ChatUtils.message(invitee, UHCMessage.COMMAND_MISC_NOT_LEADER);
                 return;
             }
             if(invited.hasTeam() && invited.getTeam().equals(invitee.getTeam())) {
-                invitee.message(INVITE_PLAYER_ON_YOUR_TEAM.replace("{0}", invited.name()));
+                ChatUtils.message(invitee, UHCMessage.COMMAND_INVITE_PLAYER_YOUR_TEAM, invited.name());
                 return;
             }
             if(invited.hasTeam()) {
-                invitee.message(INVITE_PLAYER_ON_ANOTHER_TEAM.replace("{0}", invited.name()));
+                ChatUtils.message(invitee, UHCMessage.COMMAND_INVITE_PLAYER_OTHER_TEAM, invited.name());
                 return;
             }
 
@@ -89,13 +68,13 @@ public class TeamModule extends Module {
                 UHCTeam team = invitee.getTeam();
                 if(!team.hasInvite(invited)) {
                     team.addInvite(invited);
-                    invited.message(INVITE_MSG.replace("{0}", invitee.name()));
-                    invitee.message(TEAM_INVITED.replace("{0}", invited.name()));
+                    ChatUtils.message(invited, UHCMessage.COMMAND_INVITE_INVITED, team.getLeader().name());
+                    ChatUtils.message(invitee, UHCMessage.COMMAND_TEAM_INVITED, invited.name());
                 }else {
-                    invitee.message(INVITE_PENDING);
+                    ChatUtils.message(invitee, UHCMessage.COMMAND_INVITE_PENDING, invited.name());
                 }
             } else {
-                invitee.message(TEAM_CAPACITY_REACHED);
+                ChatUtils.message(invitee, UHCMessage.COMMAND_MISC_TEAM_LIMIT);
             }
         }
     }
@@ -103,25 +82,25 @@ public class TeamModule extends Module {
     public void joinTeam(UHCPlayer player, UHCTeam team) {
         if(isEnabled()) {
             if(!team.hasInvite(player)) {
-                player.message(INVITE_NONE.replace("{0}", team.getLeader().name()));
+                ChatUtils.message(player, UHCMessage.COMMAND_INVITE_NO_INVITE, team.getLeader().name());
                 return;
             }
 
             if(!player.hasTeam()) {
                 if(team.getMemberCount() >= this.getMaxTeamSize()) {
-                    player.message(TEAM_CAPACITY_REACHED);
+                    ChatUtils.message(player, UHCMessage.COMMAND_MISC_TEAM_LIMIT);
                     return;
                 }
 
                 team.getTeamMembers().forEach(member -> {
-                    member.message(TEAM_ACCEPTED.replace("{0}", player.name()));
+                    ChatUtils.message(member, UHCMessage.COMMAND_TEAM_JOINED, player.name());
                 });
 
                 team.addTeamMember(player);
                 player.setNameColor(team.getTeamColor());
-                player.message(JOIN_TEAM_JOINED);
+                ChatUtils.message(player, UHCMessage.COMMAND_JOIN_JOINED, team.getLeader().name());
             } else {
-                player.message(CREATE_ALREADY_ON_TEAM);
+                ChatUtils.message(player, UHCMessage.COMMAND_CREATE_ON_TEAM);
             }
         }
     }
@@ -134,13 +113,14 @@ public class TeamModule extends Module {
                 } else {
                     player.setNameColor(ChatColor.WHITE);
                     team.removeTeamMember(player);
-                    player.message(LEAVE_TEAM_SUCCESS);
+                    ChatUtils.message(player, UHCMessage.COMMAND_LEAVE_SUCCESS);
+
                     team.getTeamMembers().forEach(member -> {
-                        member.message(TEAM_LEFT.replace("{0}", player.name()));
+                        ChatUtils.message(member, UHCMessage.COMMAND_TEAM_LEFT, player.name());
                     });
                 }
             } else {
-                player.message(LEAVE_TEAM_FAIL);
+                ChatUtils.message(player, UHCMessage.COMMAND_LEAVE_FAIL);
             }
         }
     }
@@ -152,7 +132,7 @@ public class TeamModule extends Module {
             for (int i = team.getTeamMembers().size() - 1; i >= 0; i--) {
                 UHCPlayer player = team.getTeamMembers().get(i);
                 team.removeTeamMember(player);
-                player.message(LEAVE_TEAM_DISBAND);
+                ChatUtils.message(player, UHCMessage.COMMAND_LEAVE_DISBAND);
             }
         }
     }

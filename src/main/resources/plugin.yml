@@ -53,17 +53,14 @@ commands:
     permission: squaduhc.command.start
     permission-message: You do not have permission to perform this command.
     usage: /<command>
-<<<<<<< HEAD
   team:
     description: Base team command
     permission: squaduhc.command.team
     permission-message: You do not have permission to perform this command.
     usage: /<command> <create|invite|accept|leave>
-=======
   t:
     description: Sends a message in team chat
     aliases: teamchat, tc
     permission: squaduhc.chat.team
     permission-message: You do not have permission to perform this command.
     usage: /<command> <message>
->>>>>>> origin/main
