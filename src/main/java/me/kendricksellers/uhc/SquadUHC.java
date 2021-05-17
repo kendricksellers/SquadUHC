@@ -20,6 +20,7 @@ public class SquadUHC extends JavaPlugin {
         instance = this;
         lobby = Bukkit.getServer().getWorld("world");
         match = new Match();
+        match.loadModules();
     }
 
     @Override

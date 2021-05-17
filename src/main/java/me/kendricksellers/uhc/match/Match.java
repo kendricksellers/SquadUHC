@@ -33,7 +33,6 @@ public class Match {
         instance = this;
         modules = new ModuleList<>();
         state = MatchState.PREGAME;
-        loadModules();
 
         world = null;
     }
