@@ -68,10 +68,6 @@ public class UHCPlayer {
         return this.metadata.get(key);
     }
 
-    public void message(String message) {
-        this.getBukkitPlayer().sendMessage(message);
-    }
-
     public void setNameColor(ChatColor color) {
         getBukkitPlayer().setDisplayName(color + getBukkitPlayer().getName());
     }

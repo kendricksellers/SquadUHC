@@ -3,6 +3,8 @@ package me.kendricksellers.uhc.command;
 import me.kendricksellers.uhc.match.Match;
 import me.kendricksellers.uhc.module.modules.core.PlayerModule;
 import me.kendricksellers.uhc.module.modules.core.TeamModule;
+import me.kendricksellers.uhc.util.ChatUtils;
+import me.kendricksellers.uhc.util.UHCMessage;
 import me.kendricksellers.uhc.util.UHCPlayer;
 import me.kendricksellers.uhc.util.UHCTeam;
 import org.bukkit.Bukkit;
@@ -16,10 +18,6 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 public class TeamCommands implements CommandExecutor {
-    private final String PLAYER_NOT_FOUND = ChatColor.RED + "Player \"{0}\" was not found!";
-    private final String PLAYER_TEAM_NOT_FOUND = ChatColor.RED + "{0}'s team was not found!";
-    private final String PLAYER_HAS_NO_TEAM = ChatColor.RED + "You are not on a team!";
-    private final String JOIN_MATCH_STARTED = ChatColor.RED + "The match has already started! You can not use this command!";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,14 +25,11 @@ public class TeamCommands implements CommandExecutor {
             throw new CommandException("Sender must be instanceof player.");
         }
 
+        Player player = (Player) sender;
         if(Match.getInstance().isRunning()) {
-            sender.sendMessage(JOIN_MATCH_STARTED);
+            ChatUtils.message(player, UHCMessage.COMMAND_MISC_MATCH_STARTED);
             return true;
         }
-
-
-        Player player = (Player) sender;
-
 
         if(command.getName().equalsIgnoreCase("team")) {
             if(args.length == 0) {
@@ -55,13 +50,13 @@ public class TeamCommands implements CommandExecutor {
                     break;
                 case "invite":
                     if(subArgs.length != 1) {
-                        uhcPlayer.message("/team invite <player>");
+                        uhcPlayer.getBukkitPlayer().sendMessage("/team invite <player>");
                         return true;
                     }
 
                     bukkitPlayer = Bukkit.getPlayer(subArgs[0]);
                     if(bukkitPlayer == null || !bukkitPlayer.isOnline()) {
-                        uhcPlayer.message(PLAYER_NOT_FOUND.replace("{0}", subArgs[0]));
+                        ChatUtils.message(uhcPlayer, UHCMessage.COMMAND_MISC_PLAYER_NOT_FOUND, subArgs[0]);
                         return true;
                     }
 
@@ -69,12 +64,13 @@ public class TeamCommands implements CommandExecutor {
                     break;
                 case "accept":
                     if(subArgs.length != 1) {
-                        uhcPlayer.message("/team accept <player>");
+                        uhcPlayer.getBukkitPlayer().sendMessage("/team accept <player>");
+
                         return true;
                     }
                     team = teamModule.getTeam(subArgs[0]);
                     if(team == null) {
-                        uhcPlayer.message(PLAYER_TEAM_NOT_FOUND.replace("{0}", subArgs[0]));
+                        ChatUtils.message(uhcPlayer, UHCMessage.COMMAND_MISC_TEAM_NOT_FOUND);
                         return true;
                     }
                     teamModule.joinTeam(uhcPlayer, team);
@@ -83,18 +79,18 @@ public class TeamCommands implements CommandExecutor {
                     if(uhcPlayer.hasTeam()) {
                         teamModule.leaveTeam(uhcPlayer, uhcPlayer.getTeam());
                     } else {
-                        uhcPlayer.message(PLAYER_HAS_NO_TEAM);
+                        ChatUtils.message(uhcPlayer, UHCMessage.COMMAND_LEAVE_FAIL);
                     }
                     break;
                 case "revoke":
                     if(subArgs.length != 1) {
-                        uhcPlayer.message("/team invite <player>");
+                        uhcPlayer.getBukkitPlayer().sendMessage("/team invite <player>");
                         return true;
                     }
 
                     bukkitPlayer = Bukkit.getPlayer(subArgs[0]);
                     if(bukkitPlayer == null || !bukkitPlayer.isOnline()) {
-                        uhcPlayer.message(PLAYER_NOT_FOUND.replace("{0}", subArgs[0]));
+                        ChatUtils.message(uhcPlayer, UHCMessage.COMMAND_MISC_PLAYER_NOT_FOUND, subArgs[0]);
                         return true;
                     }
 
@@ -102,9 +98,9 @@ public class TeamCommands implements CommandExecutor {
                     UHCPlayer revoked = playerModule.getPlayer(bukkitPlayer.getUniqueId());
                     if(team.hasInvite(revoked)) {
                         team.revokeInvite(revoked);
-                        uhcPlayer.message("{0}'s invite revoked".replace("{0}", revoked.name()));
+                        ChatUtils.message(uhcPlayer, UHCMessage.COMMAND_TEAM_REVOKE, revoked.name());
                     } else {
-                        uhcPlayer.message("{0} doesn't have an invite!".replace("{0}", revoked.name()));
+                        ChatUtils.message(uhcPlayer, UHCMessage.COMMAND_TEAM_REVOKE_NONE, revoked.name());
                     }
 
                 default:
